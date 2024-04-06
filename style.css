@@ -1,0 +1,126 @@
+body {
+    font-family: 'Inter';
+    margin: 0;
+    height: 100vh;
+    /* */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* */
+    background-color: rgb(178, 178, 222);
+}
+
+h1 {
+    margin: 0;
+}
+
+.card {
+    height: 650px;
+    width: 400px;
+    background-color: white;
+    border-radius: 40px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+#cardHeader {
+    display: flex;
+    flex-direction: column;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    height: 35%;
+    background-color: rgb(64, 60, 83);
+    color: white;
+}
+
+.cardHeadline {
+    margin: 32px 32px 18px 32px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#pokemonId {}
+
+#cardSubHeadline {
+    display: flex;
+    margin-left: 32px;
+    font-size: 14px;
+}
+
+.type {
+    width: 50px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.211);
+    margin: 0px 12px 0px 0px;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 65%;
+    background-color: white;
+    border-radius: 40px;
+    margin-top: -40px;
+    padding-left: 32px;
+    padding-right: 32px;
+    min-height: 100px;
+}
+
+#pokemonImg {
+    margin-right: -32px;
+    margin-top: -150px;
+    height: 200px;
+    filter: drop-shadow(7px 7px 4px rgba(0, 0, 0, 0.2));
+}
+
+.pokemonImgContainer {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
+#chart {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+
+#statsContainer,
+#statsDataContainer,
+#statsLinesContainer {
+    /* font-weight: 500;
+    color: rgba(0, 0, 0, 0.457); */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    line-height: 50px;
+    /* muss übereinstimmen mit .statsLineContainer heigt */
+}
+
+#statsLinesContainer {
+    width: 150px;
+}
+
+.statsLineContainer {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.emptyStatsLine {
+    height: 6px;
+    width: 100%;
+    background-color: rgba(40, 28, 0, 0.092);
+    border-radius: 12px;
+}
+
+.statsLine {
+    background-color: rgb(113, 229, 191);
+    height: 100%;
+    border-radius: 12px;
+}
