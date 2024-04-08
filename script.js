@@ -6,12 +6,12 @@ function init() {
 }
 
 async function loadPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/pidgey';
+    let url = 'https://pokeapi.co/api/v2/pokemon/pikachu';
     let response = await fetch(url);
     currentPokemon = await response.json(); // sonst haben wir die Variable immer responseAsJson genannt.
     console.log('loaded Pokemon', currentPokemon);
     getPokemonId();
-    
+
     renderPokemonInfo();
 }
 
@@ -43,18 +43,40 @@ function getTypes() {
 
 function getStatsList() {
     let statsList = [];
-    for(let i = 0; i < currentPokemon['stats'].length; i++) {
-         let stat = (currentPokemon['stats'][i]['stat']['name']);
-         statsList.push(stat);
+    for (let i = 0; i < currentPokemon['stats'].length; i++) {
+        let stat = (currentPokemon['stats'][i]['stat']['name']);
+        statsList.push(stat);
     }
     return statsList;
 }
 
 function getStatsData() {
     let statsData = [];
-    for(let i = 0; i < currentPokemon['stats'].length; i++) {
-         let data = (currentPokemon['stats'][i]['base_stat']);
-         statsData.push(data);
+    for (let i = 0; i < currentPokemon['stats'].length; i++) {
+        let data = (currentPokemon['stats'][i]['base_stat']);
+        statsData.push(data);
     }
     return statsData;
+}
+
+function swichCardSection(selectedSection) {
+    if (selectedSection == 'about') {
+        show('aboutSection');
+        hide('baseStatsChart');
+    } else if (selectedSection == 'stats') {
+       show('baseStatsChart');
+       hide('aboutSection');
+    }
+}
+
+function show(sectionId) {
+    let selectedSection = document.getElementById(sectionId);
+    selectedSection.classList.add('display-flex');
+    selectedSection.classList.remove('display-none');
+}
+
+function hide(sectionId) {
+    let selectedSection = document.getElementById(sectionId);
+    selectedSection.classList.add('display-none');
+    selectedSection.classList.remove('display-flex');
 }

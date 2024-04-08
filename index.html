@@ -21,11 +21,17 @@
             </div>
             <div id="cardSubHeadline"></div>
         </div>
-        <div class="infoContainer">
+        <div class="cardBody">
             <div class="pokemonImgContainer">
                 <img id="pokemonImg">
             </div>
-            <div id="chart">
+            <div class="cardBodyHeader">
+                <span onclick="swichCardSection('about')" class="cardLink">About</span>
+                <span onclick="swichCardSection('stats')" class="cardLink">Base Stats</span>
+            </div>
+            <div class="cardSeparator"></div>
+            <div class="infoContainer display-flex" id="aboutSection"></div>
+            <div class="infoContainer display-none" id="baseStatsChart">
                 <span id="statsContainer"></span>
                 <span id="statsDataContainer"></span>
                 <span id="statsLinesContainer"></span>
