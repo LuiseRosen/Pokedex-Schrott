@@ -7,6 +7,7 @@
     <title>Pokedex</title>
     <script src="script.js"></script>
     <script src="charts.js"></script>
+    <script src="templates.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="fonts.css">
 </head>
@@ -30,7 +31,10 @@
                 <span onclick="swichCardSection('stats')" class="cardLink">Base Stats</span>
             </div>
             <div class="cardSeparator"></div>
-            <div class="infoContainer display-flex" id="aboutSection"></div>
+            <div class="infoContainer display-flex" id="aboutSection">
+                <span id="aboutPointsContainer"></span>
+                <span id="aboutInfoContainer"></span>
+            </div>
             <div class="infoContainer display-none" id="baseStatsChart">
                 <span id="statsContainer"></span>
                 <span id="statsDataContainer"></span>

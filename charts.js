@@ -20,15 +20,9 @@ function renderStatsData() {
 
 function renderStatsLines() {
     let statsData = getStatsData();
-
+    
     for (i = 0; i < statsData.length; i++) {
         let statsLineLength = statsData[i] * 1.5;
-        document.getElementById('statsLinesContainer').innerHTML += ` 
-            <div class="statsLineContainer">
-                <div class="emptyStatsLine">
-                    <div class="statsLine" style="width:${statsLineLength}px"></div>
-                </div>
-            </div>
-        `; // als Template auslagern
+        document.getElementById('statsLinesContainer').innerHTML += templateStatsChart(statsLineLength);
     }
 }
