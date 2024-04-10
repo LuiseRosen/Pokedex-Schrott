@@ -103,7 +103,6 @@ function hide(sectionId) {
 function renderAboutSection() {
     let aboutPointsContainer = document.getElementById('aboutPointsContainer');
     for (let i = 0; i < aboutPoints.length; i++) {
-
         aboutPointsContainer.innerHTML += `<div>${aboutPoints[i]}</div>`;
     }
 }
