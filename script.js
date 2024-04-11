@@ -1,10 +1,14 @@
 let currentPokemon;
 let pokemonId;
 
-let aboutPoints = ['species', 'height', 'weight', 'abilities', 'habitat', 'growth-rate']
+let currentSpeciesInfo;
 
-function init() {
-    loadPokemon();
+let specsList = ['species', 'height', 'weight', 'abilities', 'habitat', 'growth-rate'];
+let specsInfo = [];
+
+async function init() {
+    await loadPokemon();
+    loadSpeciesInfo();
 }
 
 async function loadPokemon() {
@@ -14,6 +18,13 @@ async function loadPokemon() {
     console.log('loaded Pokemon', currentPokemon);
     getPokemonId();
     renderPokemonInfo();
+}
+
+async function loadSpeciesInfo() {
+    let url = currentPokemon['species']['url'];
+    let response = await fetch(url);
+    currentSpeciesInfo = await response.json();
+    console.log('species Info', currentSpeciesInfo);
 }
 
 function renderPokemonInfo() {
@@ -101,23 +112,35 @@ function hide(sectionId) {
 
 
 function renderAboutSection() {
-    let aboutPointsContainer = document.getElementById('aboutPointsContainer');
-    for (let i = 0; i < aboutPoints.length; i++) {
-        aboutPointsContainer.innerHTML += `<div>${aboutPoints[i]}</div>`;
+    let specsListContainer = document.getElementById('specsListContainer');
+    let specsInfoContainer = document.getElementById('specsInfoContainer');
+
+    for (let i = 0; i < specsList.length; i++) {
+        specsListContainer.innerHTML += `<div class="spec">${specsList[i]}</div>`;
+        // specsInfoContainer.innerHTML += `<div class="specInfo">${specsInfo[i]}</div>`;
     }
-}
-
-function getWeight() {
-    let weight = formattedNumber(currentPokemon['weight']);
-    console.log(weight);
-}
-
-function getHeight() {
-    let height = formattedNumber(currentPokemon['height']);
-    console.log(height);
 }
 
 function formattedNumber(number) {
     let formattedNumber = number / 10;
     return formattedNumber;
+}
+
+function getSpecsInfo() {
+    let species = currentSpeciesInfo['genera'][7]['genus'];
+    let height = formattedNumber(currentPokemon['height']);
+    let weight = formattedNumber(currentPokemon['weight']);
+    let abilities = getAbilities();
+    let habitat = currentSpeciesInfo['habitat']['name'];
+    let growthRate = currentSpeciesInfo['growth_rate']['name'];
+}
+
+function getAbilities() {
+    let abilities = [];
+
+    for (let i = 0; i < currentPokemon['abilities'].length; i++) {
+        let ability = currentPokemon['abilities'][i]['ability']['name'];
+        abilities.push(ability);
+    }
+    return abilities;
 }
