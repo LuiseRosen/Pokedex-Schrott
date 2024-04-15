@@ -121,7 +121,7 @@ h1 {
 /* Stats Chart ---------------------------------------------------------------------------------------------- */
 #baseStatsChart {
     justify-content: space-between;
-    
+
 }
 
 #statsContainer,
@@ -162,10 +162,15 @@ h1 {
 }
 
 /* About Section---------------------------------------------------------------------------------------------- */
-#specsListContainer {
+#specsListContainer,
+#specsInfoContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+#specsInfoContainer {
+margin-left: 56px;
 }
 
 /* ----------------------------------------------------------------------------------------------------------- */

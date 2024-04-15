@@ -7,3 +7,15 @@ function templateStatsChart(statsLineLength) {
     </div>
 `; 
 }
+
+function templateSpecsList(specsList, i) {
+    return `<div class="spec">${specsList[i]}</div>`;
+}
+
+function templateSpecsInfo(specsInfo, i) {
+return `<div class="specInfo">${specsInfo[i]}</div>`;
+}
+
+function templateTypes(type) {
+    return `<span class="type">${type}</span>`;
+}

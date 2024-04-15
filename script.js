@@ -1,14 +1,9 @@
 let currentPokemon;
-let pokemonId;
+let pokemonId; // muss das global sein ?
+let currentSpeciesInfo; // muss das global sein ?
 
-let currentSpeciesInfo;
-
-let specsList = ['species', 'height', 'weight', 'abilities', 'habitat', 'growth-rate'];
-let specsInfo = [];
-
-async function init() {
-    await loadPokemon();
-    loadSpeciesInfo();
+function init() {
+    loadPokemon();
 }
 
 async function loadPokemon() {
@@ -17,6 +12,7 @@ async function loadPokemon() {
     currentPokemon = await response.json(); // currentPokemon ist die "responseAsJson"
     console.log('loaded Pokemon', currentPokemon);
     getPokemonId();
+    await loadSpeciesInfo();
     renderPokemonInfo();
 }
 
@@ -49,12 +45,12 @@ function getPokemonImg() {
     return pokemonImg;
 }
 
-function getTypes() {
+function getTypes() { // Subheadline
     let types = currentPokemon['types']
 
     for (let i = 0; i < types.length; i++) {
         let type = types[i]['type']['name'];
-        document.getElementById('cardSubHeadline').innerHTML += `<span class="type">${type}</span>`;
+        document.getElementById('cardSubHeadline').innerHTML += templateTypes(type);
     }
 }
 
@@ -89,58 +85,72 @@ function getStatsData() {
 
 function swichCardSection(selectedSection) {
     if (selectedSection == 'about') {
-        show('aboutSection');
-        hide('baseStatsChart');
+        show('aboutSection'); // div einblenden
+        hide('baseStatsChart'); // div ausblenden
     } else if (selectedSection == 'stats') {
-        show('baseStatsChart');
-        hide('aboutSection');
+        show('baseStatsChart'); // div einblenden
+        hide('aboutSection'); // div ausblenden
     }
 }
 
-function show(sectionId) {
+function show(sectionId) { // div einblenden
     let selectedSection = document.getElementById(sectionId);
     selectedSection.classList.add('display-flex');
     selectedSection.classList.remove('display-none');
 }
 
-function hide(sectionId) {
+function hide(sectionId) { // div ausblenden
     let selectedSection = document.getElementById(sectionId);
     selectedSection.classList.add('display-none');
     selectedSection.classList.remove('display-flex');
 }
 
-
-
 function renderAboutSection() {
-    let specsListContainer = document.getElementById('specsListContainer');
-    let specsInfoContainer = document.getElementById('specsInfoContainer');
+    let specsList = ['Species', 'Height', 'Weight', 'Abilities', 'Habitat', 'Growth-Rate'];
+    let specsInfo = getSpecsInfo(); // Array mit Spezifikationen laden
 
     for (let i = 0; i < specsList.length; i++) {
-        specsListContainer.innerHTML += `<div class="spec">${specsList[i]}</div>`;
-        // specsInfoContainer.innerHTML += `<div class="specInfo">${specsInfo[i]}</div>`;
+        specsListContainer.innerHTML += templateSpecsList(specsList, i); 
+        specsInfoContainer.innerHTML += templateSpecsInfo(specsInfo, i);
     }
-}
-
-function formattedNumber(number) {
-    let formattedNumber = number / 10;
-    return formattedNumber;
 }
 
 function getSpecsInfo() {
     let species = currentSpeciesInfo['genera'][7]['genus'];
-    let height = formattedNumber(currentPokemon['height']);
-    let weight = formattedNumber(currentPokemon['weight']);
+    let height = formattedNumber(currentPokemon['height']) + ' m';
+    let weight = formattedNumber(currentPokemon['weight']) + ' kg';
     let abilities = getAbilities();
     let habitat = currentSpeciesInfo['habitat']['name'];
     let growthRate = currentSpeciesInfo['growth_rate']['name'];
+    let specsInfo = [species, height, weight, abilities, habitat, growthRate];
+    return specsInfo;
+}
+
+function formattedNumber(number) { // Umrechnung der Werte in Meter / Kilogramm 
+    let formattedNumber = number / 10;
+    return formattedNumber;
 }
 
 function getAbilities() {
     let abilities = [];
-
     for (let i = 0; i < currentPokemon['abilities'].length; i++) {
         let ability = currentPokemon['abilities'][i]['ability']['name'];
         abilities.push(ability);
     }
-    return abilities;
+    return formattedAbilities(abilities);
+}
+
+function formattedAbilities(abilities) {
+    let abilitiesToUpperCase = firstLetterToUpperCase(abilities); // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
+    let abilitiesAsString = abilitiesToUpperCase.join(', '); // Inhalt in String mit Komma und Leerstelle umwandeln
+    return abilitiesAsString;
+}
+
+function firstLetterToUpperCase(array) {
+    let arrayToUpperCase = [];
+    for (let i = 0; i < array.length; i++) { 
+        let wordToUpperCase = array[i][0].toUpperCase() + array[i].substr(1);// den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
+        arrayToUpperCase.push(wordToUpperCase);
+    }
+    return arrayToUpperCase;
 }
