@@ -61,8 +61,7 @@ function formattedPokemonId() {
 
 function formattedPokemonName() {
     let pokemonName = currentPokemon['name'];
-    let pokemonNameCap = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1) // 1. Buchstaben groß schreiben
-    return pokemonNameCap;
+    return capitalizeWord(pokemonName);
 }
 
 function getStatsList() {
@@ -71,7 +70,7 @@ function getStatsList() {
         let stat = (currentPokemon['stats'][i]['stat']['name']);
         statsList.push(stat);
     }
-    return statsList;
+    return firstLetterToUpperCase(statsList);
 }
 
 function getStatsData() {
@@ -110,7 +109,7 @@ function renderAboutSection() {
     let specsInfo = getSpecsInfo(); // Array mit Spezifikationen laden
 
     for (let i = 0; i < specsList.length; i++) {
-        specsListContainer.innerHTML += templateSpecsList(specsList, i); 
+        specsListContainer.innerHTML += templateSpecsList(specsList, i);
         specsInfoContainer.innerHTML += templateSpecsInfo(specsInfo, i);
     }
 }
@@ -123,7 +122,7 @@ function getSpecsInfo() {
     let habitat = currentSpeciesInfo['habitat']['name'];
     let growthRate = currentSpeciesInfo['growth_rate']['name'];
     let specsInfo = [species, height, weight, abilities, habitat, growthRate];
-    return specsInfo;
+    return firstLetterToUpperCase(specsInfo);
 }
 
 function formattedNumber(number) { // Umrechnung der Werte in Meter / Kilogramm 
@@ -137,20 +136,21 @@ function getAbilities() {
         let ability = currentPokemon['abilities'][i]['ability']['name'];
         abilities.push(ability);
     }
-    return formattedAbilities(abilities);
+    return firstLetterToUpperCase(abilities).join(', '); // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen, Inhalt in String mit Komma und Leerstelle umwandeln
 }
 
-function formattedAbilities(abilities) {
-    let abilitiesToUpperCase = firstLetterToUpperCase(abilities); // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
-    let abilitiesAsString = abilitiesToUpperCase.join(', '); // Inhalt in String mit Komma und Leerstelle umwandeln
-    return abilitiesAsString;
-}
-
-function firstLetterToUpperCase(array) {
+function firstLetterToUpperCase(array) { // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
     let arrayToUpperCase = [];
-    for (let i = 0; i < array.length; i++) { 
-        let wordToUpperCase = array[i][0].toUpperCase() + array[i].substr(1);// den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
-        arrayToUpperCase.push(wordToUpperCase);
+    for (let i = 0; i < array.length; i++) {
+        arrayToUpperCase.push(capitalizeWord(array[i]));
     }
     return arrayToUpperCase;
+}
+
+function capitalizeWord(word) { // Wort groß schreiben, auch 1. Buchstabe nach Bindestrich
+    let words = word.split('-'); // 'word' in ein Array ohne '-' aufspalten
+    for (let i = 0; i < words.length; i++) {
+        words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1); // 1. Buchstaben jedes Wortes groß schreiben: charAt(0) gibt den Buchstaben an der Position 0 zurück, .toUpperCase() wird auf diesen angewendet. Mit + words[i].slice(1) wird - beginnend mit dem Zeichen an Position 1 und bis zum Ende des Strings - der Rest des Wortes angefügt
+    }
+    return words.join('-');  // Bindestrich wieder einfügen und fertigen Wert zurückgeben
 }
