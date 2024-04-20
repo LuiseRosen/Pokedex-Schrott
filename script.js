@@ -1,17 +1,48 @@
-let currentPokemon;
-let pokemonId; // muss das global sein ?
-let currentSpeciesInfo; // muss das global sein ?
+let pokemons = [];
+let pokemonsUrl = [];
 
-function init() {
-    loadPokemon();
+let currentPokemon;
+let currentSpeciesInfo;
+
+
+async function loadPokemons() {
+    let url = 'https://pokeapi.co/api/v2/pokemon/';
+    let response = await fetch(url);
+    responseAsJson = await response.json(); // pokemons ist die "responseAsJson"
+    createPokemonsArray(responseAsJson['results']);
+    renderPokemons();
+
+    console.log(responseAsJson);
 }
 
-async function loadPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/bulbasaur';
+function createPokemonsArray(pokemonsJson) {
+    for (let i = 0; i < pokemonsJson.length; i ++){
+        pokemons.push(pokemonsJson[i]['name']);
+        pokemonsUrl.push(pokemonsJson[i]['url']);
+    }
+    console.log('Pokemons', pokemons);
+}
+
+function renderPokemons() {
+    for (let i = 0; i < pokemons.length; i++) { 
+        previewCardsContainer.innerHTML += templateCardPreview(i, capitalizeWord(pokemons[i]));
+    }
+}
+
+// Card ------------------------------------------------------------------------------------------------------------
+
+function showCard(i) {
+    let pokemonId = i + 1;
+    wipeCard();
+    show('card');
+    loadPokemon(pokemonId);
+}
+
+async function loadPokemon(pokemonId) {
+    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
     let response = await fetch(url);
     currentPokemon = await response.json(); // currentPokemon ist die "responseAsJson"
     console.log('loaded Pokemon', currentPokemon);
-    getPokemonId();
     await loadSpeciesInfo();
     renderPokemonInfo();
 }
@@ -30,59 +61,52 @@ function renderPokemonInfo() {
     renderAboutSection();
 }
 
-function getPokemonId() {
-    pokemonId = currentPokemon['id'];
+function wipeCard() {
+    // currentPokemon = '';
+    // currentSpeciesInfo = '';
+    pokemonName.innerHTML = '';
+    pokemonImg.src = '';
+    pokemonId.innerHTML = '';
+    cardSubHeadline.innerHTML = '';
+    specsListContainer.innerHTML = '';
+    specsInfoContainer.innerHTML = '';
+    statsContainer.innerHTML = '';
+    statsDataContainer.innerHTML = '';
+    statsLinesContainer.innerHTML = '';
+    show('aboutSection');
+    hide('baseStatsChart');
 }
+
+// Card-Header ------------------------------------------------------------------------------------------------------
 
 function addCardHeader() {
     document.getElementById('pokemonName').innerHTML = formattedPokemonName(); // Pokemon Namen als Überschrift einfügen
-    document.getElementById('pokemonImg').src = getPokemonImg(); // Pokemon IMG einfügen
+    document.getElementById('pokemonImg').src = getPokemonImgUrl(); // Pokemon IMG einfügen
     document.getElementById('pokemonId').innerHTML = '#' + formattedPokemonId(); // Pokemon-ID in die Überschrift einfügen
 }
 
-function getPokemonImg() {
-    let pokemonImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-    return pokemonImg;
+function getPokemonImgUrl() { // Pokemon-Bild-URL laden
+    return currentPokemon['sprites']['other']['official-artwork']['front_default'];
 }
 
-function getTypes() { // Subheadline
-    let types = currentPokemon['types']
+function getTypes() { // Types in die Card-Subheadline einfügen
+    let types = currentPokemon['types']; // Array mit allen Types
 
-    for (let i = 0; i < types.length; i++) {
+    for (let i = 0; i < types.length; i++) { // durch Array 'types' iterieren um alle types in die Subheadline einzufügen
         let type = types[i]['type']['name'];
         document.getElementById('cardSubHeadline').innerHTML += templateTypes(type);
     }
 }
 
 function formattedPokemonId() {
-    let formattedPokemonId = pokemonId.toString().padStart(3, '0'); // ID-Nummer 3-stellig machen 
-    return formattedPokemonId;
+    return currentPokemon['id'].toString().padStart(3, '0'); // ID-Nummer 3-stellig machen 
 }
 
-function formattedPokemonName() {
-    let pokemonName = currentPokemon['name'];
-    return capitalizeWord(pokemonName);
+function formattedPokemonName() { // Pokemon Namen groß schreiben
+    return capitalizeWord(currentPokemon['name']);
 }
 
-function getStatsList() {
-    let statsList = [];
-    for (let i = 0; i < currentPokemon['stats'].length; i++) {
-        let stat = (currentPokemon['stats'][i]['stat']['name']);
-        statsList.push(stat);
-    }
-    return firstLetterToUpperCase(statsList);
-}
-
-function getStatsData() {
-    let statsData = [];
-    for (let i = 0; i < currentPokemon['stats'].length; i++) {
-        let data = (currentPokemon['stats'][i]['base_stat']);
-        statsData.push(data);
-    }
-    return statsData;
-}
-
-function swichCardSection(selectedSection) {
+function swichCardSection(selectedSection) { // Kartensektion wechseln zwischen About und Stats
     if (selectedSection == 'about') {
         show('aboutSection'); // div einblenden
         hide('baseStatsChart'); // div ausblenden
@@ -91,6 +115,65 @@ function swichCardSection(selectedSection) {
         hide('aboutSection'); // div ausblenden
     }
 }
+
+// Card Stats-Section ------------------------------------------------------------------------------------------------------------------
+
+function getStatsList() { // Array mit allen Stats 'Überschriften' erstellen
+    let statsList = [];
+    for (let i = 0; i < currentPokemon['stats'].length; i++) {
+        let stat = (currentPokemon['stats'][i]['stat']['name']);
+        statsList.push(stat);
+    }
+    return firstLetterToUpperCase(statsList); // alle Wörter im Array groß schreiben (1.Buchstabe)
+}
+
+function getStatsData() { // Array mit allen Stats-Werten erstellen
+    let statsData = [];
+    for (let i = 0; i < currentPokemon['stats'].length; i++) {
+        let data = (currentPokemon['stats'][i]['base_stat']);
+        statsData.push(data);
+    }
+    return statsData;
+}
+
+// Card About-Section ----------------------------------------------------------------------------------------------------
+
+function renderAboutSection() {
+    let specsList = ['Species', 'Height', 'Weight', 'Abilities', 'Habitat', 'Growth-Rate'];
+    let specsInfo = getSpecsInfo(); // Array mit Spezifikationen laden
+
+    for (let i = 0; i < specsList.length; i++) {
+        specsListContainer.innerHTML += templateSpecsList(specsList, i);
+        specsInfoContainer.innerHTML += templateSpecsInfo(specsInfo, i);
+    }
+}
+
+function getSpecsInfo() { // Array erstellen in dem die Werte für die About-Section geladen sind
+    let species = currentSpeciesInfo['genera'][7]['genus'];
+    let height = formattedNumber(currentPokemon['height']) + ' m';
+    let weight = formattedNumber(currentPokemon['weight']) + ' kg';
+    let abilities = getAbilities();
+    let habitat = currentSpeciesInfo['habitat']['name'];
+    let growthRate = currentSpeciesInfo['growth_rate']['name'];
+    let specsInfo = [species, height, weight, abilities, habitat, growthRate];
+    return firstLetterToUpperCase(specsInfo); // alle Wörter im Array am Anfang groß schreiben
+}
+
+function formattedNumber(number) { // Umrechnung der Werte height und weight in Meter / Kilogramm 
+    let formattedNumber = number / 10;
+    return formattedNumber;
+}
+
+function getAbilities() { // Array mit Abilities erstellen
+    let abilities = [];
+    for (let i = 0; i < currentPokemon['abilities'].length; i++) {
+        let ability = currentPokemon['abilities'][i]['ability']['name'];
+        abilities.push(ability);
+    }
+    return firstLetterToUpperCase(abilities).join(', '); // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen, Inhalt in String mit Komma und Leerstelle umwandeln
+}
+
+// Allgemeine Funktionen --------------------------------------------------------------------------------------------------------------------
 
 function show(sectionId) { // div einblenden
     let selectedSection = document.getElementById(sectionId);
@@ -104,49 +187,6 @@ function hide(sectionId) { // div ausblenden
     selectedSection.classList.remove('display-flex');
 }
 
-function renderAboutSection() {
-    let specsList = ['Species', 'Height', 'Weight', 'Abilities', 'Habitat', 'Growth-Rate'];
-    let specsInfo = getSpecsInfo(); // Array mit Spezifikationen laden
-
-    for (let i = 0; i < specsList.length; i++) {
-        specsListContainer.innerHTML += templateSpecsList(specsList, i);
-        specsInfoContainer.innerHTML += templateSpecsInfo(specsInfo, i);
-    }
-}
-
-function getSpecsInfo() {
-    let species = currentSpeciesInfo['genera'][7]['genus'];
-    let height = formattedNumber(currentPokemon['height']) + ' m';
-    let weight = formattedNumber(currentPokemon['weight']) + ' kg';
-    let abilities = getAbilities();
-    let habitat = currentSpeciesInfo['habitat']['name'];
-    let growthRate = currentSpeciesInfo['growth_rate']['name'];
-    let specsInfo = [species, height, weight, abilities, habitat, growthRate];
-    return firstLetterToUpperCase(specsInfo);
-}
-
-function formattedNumber(number) { // Umrechnung der Werte in Meter / Kilogramm 
-    let formattedNumber = number / 10;
-    return formattedNumber;
-}
-
-function getAbilities() {
-    let abilities = [];
-    for (let i = 0; i < currentPokemon['abilities'].length; i++) {
-        let ability = currentPokemon['abilities'][i]['ability']['name'];
-        abilities.push(ability);
-    }
-    return firstLetterToUpperCase(abilities).join(', '); // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen, Inhalt in String mit Komma und Leerstelle umwandeln
-}
-
-function firstLetterToUpperCase(array) { // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
-    let arrayToUpperCase = [];
-    for (let i = 0; i < array.length; i++) {
-        arrayToUpperCase.push(capitalizeWord(array[i]));
-    }
-    return arrayToUpperCase;
-}
-
 function capitalizeWord(word) { // Wort groß schreiben, auch 1. Buchstabe nach Bindestrich
     let words = word.split('-'); // 'word' in ein Array ohne '-' aufspalten
     for (let i = 0; i < words.length; i++) {
@@ -154,3 +194,13 @@ function capitalizeWord(word) { // Wort groß schreiben, auch 1. Buchstabe nach 
     }
     return words.join('-');  // Bindestrich wieder einfügen und fertigen Wert zurückgeben
 }
+
+function firstLetterToUpperCase(array) { // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
+    let arrayToUpperCase = [];
+    for (let i = 0; i < array.length; i++) {
+        arrayToUpperCase.push(capitalizeWord(array[i])); // jedes einzelne Wort im eingegebenen Array durch die function 'capitalizeWord(word)' jagen und dann dem Array 'arrayToUpperCase' hinzufügen
+    }
+    return arrayToUpperCase;
+}
+
+// -------------------------------------------------------------------------------------------------------------------

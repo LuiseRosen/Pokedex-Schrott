@@ -1,21 +1,41 @@
+function templateCardPreview(i, pokemonName) {
+    return /*HTML*/ `
+    <div onclick="showCard(${i})" id="" class="cardPreview">
+        <h1 class="pokemonNamePreview">${pokemonName}</h1>
+        <div>
+            <span class="types"></span>
+            <span class="pokemonImgContainer">
+                <img class="pokemonImg" src="" alt="">
+            </span>
+        </div>
+    </div>
+    `
+}
+
 function templateStatsChart(statsLineLength) {
-    return ` 
+    return /*HTML*/ ` 
     <div class="statsLineContainer">
         <div class="emptyStatsLine">
             <div class="statsLine" style="width:${statsLineLength}px"></div>
         </div>
     </div>
-`; 
+`;
 }
 
 function templateSpecsList(specsList, i) {
-    return `<div class="spec">${specsList[i]}</div>`;
+    return /*HTML*/ `
+        <div class="spec">${specsList[i]}</div>
+        `;
 }
 
 function templateSpecsInfo(specsInfo, i) {
-return `<div class="specInfo">${specsInfo[i]}</div>`;
+    return  /*HTML*/ `
+        <div class="specInfo">${specsInfo[i]}</div>
+        `;
 }
 
 function templateTypes(type) {
-    return `<span class="type">${type}</span>`;
+    return /*HTML*/ `
+        <span class="type">${type}</span>
+        `;
 }
