@@ -46,7 +46,7 @@ h1 {
     flex-direction: column;
     height: 180px;
     width: 250px;
-    margin: 40px 40px 0px 0px;
+    margin: 20px 40px 20px 0px;
     background-color: rgb(64, 60, 83);
     color: white;
     border-radius: 40px;
@@ -71,12 +71,15 @@ h1 {
     background-color: rgb(64, 60, 83);
     color: white;
     border: none;
-    border-radius: 16px;
+    border-radius: 18px;
     margin: 40px ;
+    transition: transform 0.2s ease-in-out;
 }
+
 
 #loadMoreBtn:hover {
     cursor: pointer;
+    transform: scale(1.03);
 }
 
 /* Card ----------------------------------------------------------------------------------------------------*/
@@ -92,7 +95,7 @@ h1 {
 
 
 /* Card Header ---------------------------------------------------------------------------------------------- */
-.cardNavigation {
+#cardNavigation {
     height: 18px;
     display: flex;
     justify-content: space-between;
@@ -258,13 +261,19 @@ h1 {
 
 }
 
-#specsInfoContainer {
-    margin-left: 56px;
+#specsListContainer {
+    width: 122px;
 }
 
-/* ----------------------------------------------------------------------------------------------------------- */
+#specsInfoContainer {
+    margin-left: 40px;
+}
 
+.spec, .specInfo {
+    height: 24px;
+}
 
+/* Allgemein ----------------------------------------------------------------------------------------------------------- */
 
 
 .display-none {

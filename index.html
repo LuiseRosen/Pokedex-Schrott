@@ -24,10 +24,7 @@
     <div onclick="hide('card')" id="ciao">Ciao</div>
     <div id="card" class="display-none">
         <div id="cardHeader">
-            <div class="cardNavigation">
-                <img class="icon" src="./icons/arrow_previous.svg" alt="">
-                <img class="icon" src="./icons/arrow_next.svg" alt="">
-            </div>
+            <div id="cardNavigation"></div>
             <div class="cardHeadline">
                 <h1 id="pokemonName"></h1>
                 <span id="pokemonId"></span>
@@ -58,7 +55,7 @@
     </div>
     <div id="pageBody">
         <div id="previewCardsContainer"></div>
-        <button onclick="" id="loadMoreBtn">load more</button>
+        <button onclick="loadMorePokemons()" id="loadMoreBtn">load more</button>
     </div>
 
 </body>

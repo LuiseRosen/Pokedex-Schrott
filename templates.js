@@ -39,3 +39,10 @@ function templateTypes(type) {
         <span class="type">${type}</span>
         `;
 }
+
+function templateCardNavigation(pokemonIdx) {
+    return /*HTML*/ `
+        <img onclick="loadPokemon(${pokemonIdx - 1})" class="icon" src="./icons/arrow_previous.svg" alt="">
+        <img onclick="loadPokemon(${pokemonIdx + 1})" class="icon" src="./icons/arrow_next.svg" alt="">      
+    `
+}

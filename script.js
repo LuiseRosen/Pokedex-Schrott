@@ -1,3 +1,7 @@
+
+let limit = 20;
+let offset = 0;
+
 let pokemons = [];
 let pokemonsUrl = [];
 
@@ -6,7 +10,7 @@ let currentSpeciesInfo;
 
 
 async function loadPokemons() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/';
+    let url = 'https://pokeapi.co/api/v2/pokemon/?offset=' + offset + '&limit=' + limit;
     let response = await fetch(url);
     responseAsJson = await response.json(); // pokemons ist die "responseAsJson"
     createPokemonsArray(responseAsJson['results']);
@@ -24,27 +28,38 @@ function createPokemonsArray(pokemonsJson) {
 }
 
 function renderPokemons() {
+    document.getElementById('previewCardsContainer').innerHTML = '';
     for (let i = 0; i < pokemons.length; i++) { 
-        previewCardsContainer.innerHTML += templateCardPreview(i, capitalizeWord(pokemons[i]));
+        document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(i, capitalizeWord(pokemons[i]));
     }
 }
 
+function loadMorePokemons() {
+    limit += 20;
+    offset += 20;
+    loadPokemons();
+    console.log(limit);
+ }
 // Card ------------------------------------------------------------------------------------------------------------
 
 function showCard(i) {
     let pokemonId = i + 1;
-    wipeCard();
     show('card');
     loadPokemon(pokemonId);
 }
 
 async function loadPokemon(pokemonId) {
-    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
-    let response = await fetch(url);
-    currentPokemon = await response.json(); // currentPokemon ist die "responseAsJson"
-    console.log('loaded Pokemon', currentPokemon);
-    await loadSpeciesInfo();
-    renderPokemonInfo();
+    if (pokemonId < 1) {} // do nothing
+    else {
+        wipeCard();
+        let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
+        let response = await fetch(url);
+        currentPokemon = await response.json(); // currentPokemon ist die "responseAsJson"
+        console.log('loaded Pokemon', currentPokemon);
+        await loadSpeciesInfo();
+        renderPokemonInfo(pokemonId);
+    }
+    
 }
 
 async function loadSpeciesInfo() {
@@ -54,35 +69,34 @@ async function loadSpeciesInfo() {
     console.log('species Info', currentSpeciesInfo);
 }
 
-function renderPokemonInfo() {
-    addCardHeader();
+function renderPokemonInfo(pokemonId) {
+    addCardHeader(pokemonId);
     getTypes();
     renderChart();
     renderAboutSection();
 }
 
 function wipeCard() {
-    // currentPokemon = '';
-    // currentSpeciesInfo = '';
-    pokemonName.innerHTML = '';
-    pokemonImg.src = '';
-    pokemonId.innerHTML = '';
-    cardSubHeadline.innerHTML = '';
-    specsListContainer.innerHTML = '';
-    specsInfoContainer.innerHTML = '';
-    statsContainer.innerHTML = '';
-    statsDataContainer.innerHTML = '';
-    statsLinesContainer.innerHTML = '';
+    document.getElementById('pokemonName').innerHTML = '';
+    document.getElementById('pokemonImg').src = '';
+    document.getElementById('pokemonId').innerHTML = '';
+    document.getElementById('cardSubHeadline').innerHTML = '';
+    document.getElementById('specsListContainer').innerHTML = '';
+    document.getElementById('specsInfoContainer').innerHTML = '';
+    document.getElementById('statsContainer').innerHTML = '';
+    document.getElementById('statsDataContainer').innerHTML = '';
+    document.getElementById('statsLinesContainer').innerHTML = '';
     show('aboutSection');
     hide('baseStatsChart');
 }
 
 // Card-Header ------------------------------------------------------------------------------------------------------
 
-function addCardHeader() {
+function addCardHeader(pokemonId) {
     document.getElementById('pokemonName').innerHTML = formattedPokemonName(); // Pokemon Namen als Überschrift einfügen
     document.getElementById('pokemonImg').src = getPokemonImgUrl(); // Pokemon IMG einfügen
     document.getElementById('pokemonId').innerHTML = '#' + formattedPokemonId(); // Pokemon-ID in die Überschrift einfügen
+    document.getElementById('cardNavigation').innerHTML = templateCardNavigation(pokemonId);
 }
 
 function getPokemonImgUrl() { // Pokemon-Bild-URL laden
@@ -143,8 +157,8 @@ function renderAboutSection() {
     let specsInfo = getSpecsInfo(); // Array mit Spezifikationen laden
 
     for (let i = 0; i < specsList.length; i++) {
-        specsListContainer.innerHTML += templateSpecsList(specsList, i);
-        specsInfoContainer.innerHTML += templateSpecsInfo(specsInfo, i);
+        document.getElementById('specsListContainer').innerHTML += templateSpecsList(specsList, i);
+        document.getElementById('specsInfoContainer').innerHTML += templateSpecsInfo(specsInfo, i);
     }
 }
 

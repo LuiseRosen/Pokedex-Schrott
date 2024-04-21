@@ -20,9 +20,9 @@ function renderStatsData() {
 
 function renderStatsLines() {
     let statsData = getStatsData();
-    
+
     for (i = 0; i < statsData.length; i++) {
-        let statsLineLength = statsData[i] * 1.5;
+        let statsLineLength = statsData[i];
         document.getElementById('statsLinesContainer').innerHTML += templateStatsChart(statsLineLength);
     }
 }
