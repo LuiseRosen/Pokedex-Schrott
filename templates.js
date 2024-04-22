@@ -1,12 +1,10 @@
-function templateCardPreview(i, pokemonName) {
+function templateCardPreview(i, pokemonName, imgSrc) {
     return /*HTML*/ `
     <div onclick="showCard(${i})" id="" class="cardPreview">
         <h1 class="pokemonNamePreview">${pokemonName}</h1>
-        <div>
-            <span class="types"></span>
-            <span class="pokemonImgContainer">
-                <img class="pokemonImg" src="" alt="">
-            </span>
+        <div class="previewCardBody">
+            <img class="previewPokemonImg" id="previewPokemonImg${i}" src="${imgSrc}" alt="">
+            <span id="previewCardTypesContainer${i}" class="previewCardTypesContainer"></span>
         </div>
     </div>
     `
@@ -37,6 +35,12 @@ function templateSpecsInfo(specsInfo, i) {
 function templateTypes(type) {
     return /*HTML*/ `
         <span class="type">${type}</span>
+        `;
+}
+
+function templatePreviewTypes(type) {
+    return /*HTML*/ `
+        <span class="typePreview">${type}</span>
         `;
 }
 

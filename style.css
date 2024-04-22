@@ -12,7 +12,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: scroll; 
+    overflow: scroll;
 }
 
 #hi {
@@ -44,6 +44,7 @@ h1 {
 .cardPreview {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     height: 180px;
     width: 250px;
     margin: 20px 40px 20px 0px;
@@ -59,9 +60,38 @@ h1 {
     transform: scale(1.03);
 }
 
+.previewCardBody {
+    display: flex;
+    justify-content: space-between;
+}
+
 .pokemonNamePreview {
-    font-size: 20px;
-    margin: 32px 0px 0px 32px;
+    font-size: 32px;
+    font-weight: 500;
+    margin: 12px 0px 0px 24px;
+    text-align: left;
+}
+
+.previewPokemonImg {
+    margin: 0px 0px 12px 12px;
+    height: 120px;
+}
+
+.previewCardTypesContainer {
+    margin: 0px 12px 0px 0px;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.typePreview {
+    width: 60px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.211);
+    margin: 0px 0px 12px 0px;
+    border-radius: 12px;
+    padding: 8px;
 }
 
 #loadMoreBtn {
@@ -72,7 +102,7 @@ h1 {
     color: white;
     border: none;
     border-radius: 18px;
-    margin: 40px ;
+    margin: 40px;
     transition: transform 0.2s ease-in-out;
 }
 
@@ -138,10 +168,10 @@ h1 {
 }
 
 .type {
-    width: 50px;
+    width: 60px;
     text-align: center;
     background-color: rgba(255, 255, 255, 0.211);
-    margin: 0px 12px 0px 0px;
+    margin: 0px 12px 12px 0px;
     border-radius: 12px;
     padding: 8px;
 }
@@ -203,10 +233,9 @@ h1 {
 }
 
 .infoContainer {
-    /* display: flex; */
+    font-size: 15px;
     height: 100%;
-    /* width: 100%; */
-    justify-content: space-between;
+    justify-content: left;
 }
 
 /* Stats Chart ---------------------------------------------------------------------------------------------- */
@@ -269,7 +298,8 @@ h1 {
     margin-left: 40px;
 }
 
-.spec, .specInfo {
+.spec,
+.specInfo {
     height: 24px;
 }
 

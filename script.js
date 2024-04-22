@@ -1,4 +1,3 @@
-
 let limit = 20;
 let offset = 0;
 
@@ -12,34 +11,64 @@ let currentSpeciesInfo;
 async function loadPokemons() {
     let url = 'https://pokeapi.co/api/v2/pokemon/?offset=' + offset + '&limit=' + limit;
     let response = await fetch(url);
-    responseAsJson = await response.json(); // pokemons ist die "responseAsJson"
+    responseAsJson = await response.json();
     createPokemonsArray(responseAsJson['results']);
     renderPokemons();
 
     console.log(responseAsJson);
 }
 
+function loadMorePokemons() {
+    limit += 20;
+    offset += 20;
+    loadPokemons();
+}
+
 function createPokemonsArray(pokemonsJson) {
-    for (let i = 0; i < pokemonsJson.length; i ++){
+    for (let i = 0; i < pokemonsJson.length; i++) {
         pokemons.push(pokemonsJson[i]['name']);
         pokemonsUrl.push(pokemonsJson[i]['url']);
     }
     console.log('Pokemons', pokemons);
 }
 
-function renderPokemons() {
+function renderPokemons() { // preview Cards laden
     document.getElementById('previewCardsContainer').innerHTML = '';
-    for (let i = 0; i < pokemons.length; i++) { 
-        document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(i, capitalizeWord(pokemons[i]));
+    for (let i = 0; i < pokemons.length; i++) {
+        let pokemonId = i + 1; // i + 1 ist die ID des Pokemons, da ein Array immer bei 0 anfängt, aber die Pokemons bei 1
+        let pokemonName = capitalizeWord(pokemons[i]);
+        let imgUrl = getPreviewImgUrl(pokemonId);
+        document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(i, pokemonName, imgUrl);
+        renderTypesToPreviewCard(pokemonId, i);
     }
 }
 
-function loadMorePokemons() {
-    limit += 20;
-    offset += 20;
-    loadPokemons();
-    console.log(limit);
- }
+function getPreviewImgUrl(pokemonId) {
+    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + pokemonId + '.png';
+}
+
+async function renderTypesToPreviewCard(pokemonId, i) {
+    let types = await getTypes(pokemonId);
+    let containerId = 'previewCardTypesContainer' + i;
+    for (j = 0; j < types.length; j++) {
+        document.getElementById(containerId).innerHTML += templatePreviewTypes(types[j]);
+    }
+}
+
+async function getTypes(pokemonId) {
+    let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
+    let response = await fetch(url);
+    let pokemon = await response.json(); // currentPokemon ist die "responseAsJson"
+    let typesJson = pokemon['types']; // Array mit allen Types
+    let types = [];
+    for (let i = 0; i < typesJson.length; i++) { // durch Array 'types' iterieren um alle types in die Subheadline einzufügen
+        let type = typesJson[i]['type']['name'];
+        types.push(type);
+    }
+    return arrayToUpperCase(types);
+
+}
+
 // Card ------------------------------------------------------------------------------------------------------------
 
 function showCard(i) {
@@ -49,7 +78,7 @@ function showCard(i) {
 }
 
 async function loadPokemon(pokemonId) {
-    if (pokemonId < 1) {} // do nothing
+    if (pokemonId < 1) { } // do nothing
     else {
         wipeCard();
         let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
@@ -59,19 +88,17 @@ async function loadPokemon(pokemonId) {
         await loadSpeciesInfo();
         renderPokemonInfo(pokemonId);
     }
-    
 }
 
 async function loadSpeciesInfo() {
     let url = currentPokemon['species']['url'];
     let response = await fetch(url);
     currentSpeciesInfo = await response.json();
-    console.log('species Info', currentSpeciesInfo);
 }
 
-function renderPokemonInfo(pokemonId) {
+async function renderPokemonInfo(pokemonId) {
     addCardHeader(pokemonId);
-    getTypes();
+    renderTypesToCard(await getTypes(pokemonId)); // Types in die Card-Subheadline einfügen
     renderChart();
     renderAboutSection();
 }
@@ -103,12 +130,10 @@ function getPokemonImgUrl() { // Pokemon-Bild-URL laden
     return currentPokemon['sprites']['other']['official-artwork']['front_default'];
 }
 
-function getTypes() { // Types in die Card-Subheadline einfügen
-    let types = currentPokemon['types']; // Array mit allen Types
-
+function renderTypesToCard(types) { // Types in die Card-Subheadline einfügen
+    console.log(types);
     for (let i = 0; i < types.length; i++) { // durch Array 'types' iterieren um alle types in die Subheadline einzufügen
-        let type = types[i]['type']['name'];
-        document.getElementById('cardSubHeadline').innerHTML += templateTypes(type);
+        document.getElementById('cardSubHeadline').innerHTML += templateTypes(types[i]);
     }
 }
 
@@ -138,7 +163,7 @@ function getStatsList() { // Array mit allen Stats 'Überschriften' erstellen
         let stat = (currentPokemon['stats'][i]['stat']['name']);
         statsList.push(stat);
     }
-    return firstLetterToUpperCase(statsList); // alle Wörter im Array groß schreiben (1.Buchstabe)
+    return arrayToUpperCase(statsList); // alle Wörter im Array groß schreiben (1.Buchstabe)
 }
 
 function getStatsData() { // Array mit allen Stats-Werten erstellen
@@ -164,18 +189,18 @@ function renderAboutSection() {
 
 function getSpecsInfo() { // Array erstellen in dem die Werte für die About-Section geladen sind
     let species = currentSpeciesInfo['genera'][7]['genus'];
-    let height = formattedNumber(currentPokemon['height']) + ' m';
-    let weight = formattedNumber(currentPokemon['weight']) + ' kg';
+    let height = formattedHeightAndWeight(currentPokemon['height']) + ' m';
+    let weight = formattedHeightAndWeight(currentPokemon['weight']) + ' kg';
     let abilities = getAbilities();
     let habitat = currentSpeciesInfo['habitat']['name'];
     let growthRate = currentSpeciesInfo['growth_rate']['name'];
     let specsInfo = [species, height, weight, abilities, habitat, growthRate];
-    return firstLetterToUpperCase(specsInfo); // alle Wörter im Array am Anfang groß schreiben
+    return arrayToUpperCase(specsInfo); // alle Wörter im Array am Anfang groß schreiben
 }
 
-function formattedNumber(number) { // Umrechnung der Werte height und weight in Meter / Kilogramm 
+function formattedHeightAndWeight(number) { // Umrechnung der Werte height und weight in Meter / Kilogramm 
     let formattedNumber = number / 10;
-    return formattedNumber;
+    return formattedNumber.toFixed(1); // standardmäßig eine Nachkommastelle hinzufügen
 }
 
 function getAbilities() { // Array mit Abilities erstellen
@@ -184,7 +209,7 @@ function getAbilities() { // Array mit Abilities erstellen
         let ability = currentPokemon['abilities'][i]['ability']['name'];
         abilities.push(ability);
     }
-    return firstLetterToUpperCase(abilities).join(', '); // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen, Inhalt in String mit Komma und Leerstelle umwandeln
+    return arrayToUpperCase(abilities).join(', '); // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen, Inhalt in String mit Komma und Leerstelle umwandeln
 }
 
 // Allgemeine Funktionen --------------------------------------------------------------------------------------------------------------------
@@ -209,7 +234,7 @@ function capitalizeWord(word) { // Wort groß schreiben, auch 1. Buchstabe nach 
     return words.join('-');  // Bindestrich wieder einfügen und fertigen Wert zurückgeben
 }
 
-function firstLetterToUpperCase(array) { // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
+function arrayToUpperCase(array) { // den 1. Buchstaben jedes Wortes im Array zum Großbuchstaben machen
     let arrayToUpperCase = [];
     for (let i = 0; i < array.length; i++) {
         arrayToUpperCase.push(capitalizeWord(array[i])); // jedes einzelne Wort im eingegebenen Array durch die function 'capitalizeWord(word)' jagen und dann dem Array 'arrayToUpperCase' hinzufügen
