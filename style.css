@@ -4,7 +4,45 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(178, 178, 222);
+    /* background-color: rgb(178, 178, 222); */
+    background-color: black;
+}
+
+#pageHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 24px 0px 24px 0px;
+}
+
+#pokemonLogo {
+    height: 150px;
+    margin-left: 40px;
+}
+
+#searchContainer {
+    margin-right: 40px;
+    height: 56px;
+    display: flex;
+    border: 4px solid rgba(255, 255, 255, 0.378);
+    border-radius: 16px;
+}
+
+#searchIcon {
+    opacity: 0.378;
+    height: 32px;
+    margin: 12px;
+}
+
+#searchInput {
+    border-radius: 0px 12px 12px 0px;
+    background-color: rgba(255, 255, 255, 0.378);
+    ;
+    height: 54px;
+    width: 200px;
+    border: none;
+    font-size: 32px;
 }
 
 #pageBody {
@@ -113,16 +151,26 @@ h1 {
 }
 
 /* Card ----------------------------------------------------------------------------------------------------*/
+#popupBackground {
+    z-index: 2;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.312);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
 #card {
+    z-index: 3;
     flex-direction: column;
     height: 580px;
     width: 400px;
     background-color: white;
-    border-radius: 40px;
+    border-radius: 45px 45px 40px 40px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
-
-
 
 /* Card Header ---------------------------------------------------------------------------------------------- */
 #cardNavigation {

@@ -14,44 +14,42 @@
 
 <body onload="loadPokemons()">
     <div id="pageHeader">
-        <div>Pokemon Logo</div>
-        <div id="search">
-            <img id="searchIcon" src="" alt="">
-            <input id="search" type="text">
+        <img id="pokemonLogo" src="./icons/pokémon_logo.svg.png" alt="">
+        <div id="searchContainer">
+            <img id="searchIcon" src="./icons/search.svg" alt="">
+            <input id="searchInput" type="text">
         </div>
     </div>
-    <div onclick="showCard()" id="hi">Hi</div>
-    <div onclick="hide('card')" id="ciao">Ciao</div>
-    <div id="card" class="display-none">
-        <div id="cardHeader">
-            <div id="cardNavigation"></div>
-            <div class="cardHeadline">
-                <h1 id="pokemonName"></h1>
-                <span id="pokemonId"></span>
+    <div id="popupBackground" class="display-none" onclick="hideCard('card')">
+        <div id="card" class="display-none" onclick="doNotClose(event)">
+            <div id="cardHeader">
+                <div id="cardNavigation"></div>
+                <div class="cardHeadline">
+                    <h1 id="pokemonName"></h1>
+                    <span id="pokemonId"></span>
+                </div>
+                <div id="cardSubHeadline"></div>
             </div>
-            <div id="cardSubHeadline"></div>
+            <div class="cardBody">
+                <div class="pokemonImgContainer">
+                    <img id="pokemonImg">
+                </div>
+                <div class="cardBodyHeader">
+                    <span onclick="swichCardSection('about')" class="cardLink">About</span>
+                    <span onclick="swichCardSection('stats')" class="cardLink">Base Stats</span>
+                </div>
+                <div class="cardSeparator"></div>
+                <div class="infoContainer display-flex" id="aboutSection">
+                    <span id="specsListContainer"></span>
+                    <span id="specsInfoContainer"></span>
+                </div>
+                <div class="infoContainer display-none" id="baseStatsChart">
+                    <span id="statsContainer"></span>
+                    <span id="statsDataContainer"></span>
+                    <span id="statsLinesContainer"></span>
+                </div>
+            </div>
         </div>
-        <div class="cardBody">
-            <div class="pokemonImgContainer">
-                <img id="pokemonImg">
-            </div>
-            <div class="cardBodyHeader">
-                <span onclick="swichCardSection('about')" class="cardLink">About</span>
-                <span onclick="swichCardSection('stats')" class="cardLink">Base Stats</span>
-            </div>
-            <div class="cardSeparator"></div>
-            <div class="infoContainer display-flex" id="aboutSection">
-                <span id="specsListContainer"></span>
-                <span id="specsInfoContainer"></span>
-            </div>
-            <div class="infoContainer display-none" id="baseStatsChart">
-                <span id="statsContainer"></span>
-                <span id="statsDataContainer"></span>
-                <span id="statsLinesContainer"></span>
-            </div>
-        </div>
-
-
     </div>
     <div id="pageBody">
         <div id="previewCardsContainer"></div>

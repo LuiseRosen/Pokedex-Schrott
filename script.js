@@ -73,8 +73,16 @@ async function getTypes(pokemonId) {
 
 function showCard(i) {
     let pokemonId = i + 1;
+    show('popupBackground');
     show('card');
     loadPokemon(pokemonId);
+    document.body.style.overflow = "hidden"; // srollen unterbinden
+}
+
+function hideCard(sectionId) {
+    hide(sectionId);
+    hide('popupBackground');
+    document.body.style.overflow = "scroll"; // scrollen wieder aktivieren
 }
 
 async function loadPokemon(pokemonId) {
@@ -240,6 +248,10 @@ function arrayToUpperCase(array) { // den 1. Buchstaben jedes Wortes im Array zu
         arrayToUpperCase.push(capitalizeWord(array[i])); // jedes einzelne Wort im eingegebenen Array durch die function 'capitalizeWord(word)' jagen und dann dem Array 'arrayToUpperCase' hinzufügen
     }
     return arrayToUpperCase;
+}
+
+function doNotClose(event) {
+    event.stopPropagation();
 }
 
 // -------------------------------------------------------------------------------------------------------------------
