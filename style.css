@@ -8,41 +8,44 @@ body {
     background-color: black;
 }
 
+h1 {
+    margin: 0;
+}
+
 #pageHeader {
-    width: 100%;
+    width: 1150px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     margin: 24px 0px 24px 0px;
 }
 
 #pokemonLogo {
     height: 150px;
-    margin-left: 40px;
 }
 
-#searchContainer {
-    margin-right: 40px;
-    height: 56px;
+#searchOutline {
+    margin-right: 20px;
+    width: 240px;
+    height: 34px;
     display: flex;
-    border: 4px solid rgba(255, 255, 255, 0.378);
-    border-radius: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.378);
+    border-radius: 12px;
+}
+
+#searchInput {
+    border-radius: 0px 9px 9px 0px;
+    background-color: rgba(255, 255, 255, 0.378);
+    height: 32px;
+    width: 204px;
+    border: none;
+    font-size: 20px;
 }
 
 #searchIcon {
     opacity: 0.378;
-    height: 32px;
-    margin: 12px;
-}
-
-#searchInput {
-    border-radius: 0px 12px 12px 0px;
-    background-color: rgba(255, 255, 255, 0.378);
-    ;
-    height: 54px;
-    width: 200px;
-    border: none;
-    font-size: 32px;
+    height: 20px;
+    margin: 6px;
 }
 
 #pageBody {
@@ -51,24 +54,6 @@ body {
     align-items: center;
     justify-content: center;
     overflow: scroll;
-}
-
-#hi {
-    position: absolute;
-    top: 40px;
-    right: 40px;
-    background-color: blueviolet;
-}
-
-#ciao {
-    position: absolute;
-    top: 80px;
-    right: 40px;
-    background-color: blueviolet;
-}
-
-h1 {
-    margin: 0;
 }
 
 /* Card Preview -------------------------------------------------------------------------------------------------*/
@@ -85,7 +70,7 @@ h1 {
     justify-content: space-between;
     height: 180px;
     width: 250px;
-    margin: 20px 40px 20px 0px;
+    margin: 20px 20px 20px 20px;
     background-color: rgb(64, 60, 83);
     color: white;
     border-radius: 40px;
@@ -165,9 +150,9 @@ h1 {
 #card {
     z-index: 3;
     flex-direction: column;
-    height: 580px;
+    /* height: 580px; */
     width: 400px;
-    background-color: white;
+    /* background-color: white; */
     border-radius: 45px 45px 40px 40px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
@@ -196,7 +181,7 @@ h1 {
     flex-direction: column;
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
-    height: 40%;
+    height: 232px;
     background-color: rgb(64, 60, 83);
     color: white;
 }
@@ -224,15 +209,16 @@ h1 {
     padding: 8px;
 }
 
-/* Card Body---------------------------------------------------------------------------------------------- */
+/* Card Body ---------------------------------------------------------------------------------------------- */
 .cardBody {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 60%;
+    height: 348px;
     background-color: white;
     border-radius: 40px;
     margin-top: -40px;
+    padding-bottom: 40px;
     padding-left: 32px;
     padding-right: 32px;
     min-height: 100px;
@@ -258,7 +244,7 @@ h1 {
     height: 4px;
     width: 100%;
     background-color: rgba(40, 28, 0, 0.092);
-    margin: 24px 0px 24px 0px;
+    margin: 12px 0px 0px 0px;
     border-radius: 12px;
 }
 
@@ -284,6 +270,7 @@ h1 {
     font-size: 15px;
     height: 100%;
     justify-content: left;
+    margin-top: 24px;
 }
 
 /* Stats Chart ---------------------------------------------------------------------------------------------- */
@@ -329,7 +316,8 @@ h1 {
     border-radius: 12px;
 }
 
-/* About Section---------------------------------------------------------------------------------------------- */
+/* About Section ---------------------------------------------------------------------------------------------- */
+
 #specsListContainer,
 #specsInfoContainer {
     display: flex;
@@ -339,11 +327,12 @@ h1 {
 }
 
 #specsListContainer {
-    width: 122px;
+    width: 110px;
 }
 
 #specsInfoContainer {
-    margin-left: 40px;
+    width: 214px;
+    margin-left: 20px;
 }
 
 .spec,
@@ -353,11 +342,243 @@ h1 {
 
 /* Allgemein ----------------------------------------------------------------------------------------------------------- */
 
-
 .display-none {
     display: none;
 }
 
 .display-flex {
     display: flex;
+}
+
+/* Responsive ----------------------------------------------------------------------------------------------------------- */
+
+/* 3 Karten */
+@media only screen and (max-width: 1159px) {
+    #pageHeader {
+        width: 870px;
+    }
+}
+
+/* 2 Karten */
+@media only screen and (max-width: 869px) {
+    #pageHeader {
+        flex-direction: column;
+        align-items: center;
+        width: 590px;
+    }
+
+    #searchOutline {
+        margin-right: 0px;
+        margin-top: 12px;
+        width: 200px;
+        height: 26px;
+        border: 2px solid rgba(255, 255, 255, 0.378);
+        border-radius: 12px;
+    }
+
+    #searchInput {
+        border-radius: 0px 9px 9px 0px;
+        background-color: rgba(255, 255, 255, 0.378);
+        height: 24px;
+        width: 168px;
+        font-size: 20px;
+    }
+
+    #searchIcon {
+        height: 16px;
+        margin: 6px;
+    }
+}
+
+/* 1 Karte */
+@media only screen and (max-width: 579px) {
+    #pageHeader {
+        width: 580px;
+    }
+
+    #pokemonLogo {
+        height: 100px;
+    }
+
+    #searchOutline {
+        width: 144px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.378);
+        border-radius: 9px;
+    }
+
+    #searchInput {
+        border-radius: 0px 6px 6px 0px;
+        background-color: rgba(255, 255, 255, 0.378);
+        height: 18px;
+        width: 118px;
+        font-size: 16px;
+    }
+
+    #searchIcon {
+        height: 14px;
+        margin: 4px;
+    }
+
+    #card {
+        background-color: none;
+        height: 435px;
+        width: 300px;
+        border-radius: 30px 30px 30px 30px;
+    }
+
+
+    /* Card Header */
+
+    #cardNavigation {
+        height: 18px;
+        margin: 18px 20px 0px 20px;
+    }
+
+    #cardHeader {
+        /* margin: 0; */
+        display: flex;
+        flex-direction: column;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        background-color: rgb(64, 60, 83);
+        color: white;
+    }
+
+    .cardHeadline {
+        font-size: 14px;
+        margin: 6px 16px 18px 16px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #pokemonName {
+        font-weight: 300;
+    }
+
+    #pokemonId {}
+
+    #cardSubHeadline {
+        display: flex;
+        margin-left: 14px;
+        font-size: 12px;
+    }
+
+    .type {
+        width: 50px;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.211);
+        margin: 0px 12px 12px 0px;
+        border-radius: 9px;
+        padding: 6px;
+    }
+
+    /* Card Body */
+
+    .cardBody {
+        height: 320px;
+        background-color: white;
+        border-radius: 30px;
+        margin-top: -40px;
+        padding-bottom: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        min-height: 100px;
+    }
+    
+
+    .cardBodyHeader {
+        margin-top: -18px;
+    }
+
+    .cardLink {
+        margin-right: 14px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .cardSeparator {
+        height: 3px;
+        width: 100%;
+        background-color: rgba(40, 28, 0, 0.092);
+        margin: 6px 0px 6px 0px;
+        border-radius: 12px;
+    }
+
+    #pokemonImg {
+        margin-right: -18px;
+        margin-top: -70px;
+        height: 100px;
+    }
+
+    .infoContainer {
+        margin-top: 12px;
+        font-size: 14px;
+        justify-content: left;
+    }
+
+    /* Stats Chart */
+    #baseStatsChart {
+        justify-content: space-between;
+
+    }
+
+    #statsContainer,
+    #statsDataContainer,
+    #statsLinesContainer {
+        /* font-weight: 500;
+        color: rgba(0, 0, 0, 0.457); */
+        justify-content: space-between;
+        align-items: flex-start;
+        line-height: 30px;
+        /* muss übereinstimmen mit .statsLineContainer heigt */
+    }
+
+    #statsLinesContainer {
+        width: 150px;
+    }
+
+    .statsLineContainer {
+        height: 30px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .emptyStatsLine {
+        height: 8px;
+        width: 100%;
+        background-color: rgba(40, 28, 0, 0.092);
+        border-radius: 12px;
+    }
+
+    .statsLine {
+        background-color: rgb(113, 229, 191);
+        height: 100%;
+        border-radius: 12px;
+    }
+
+    /* About Section */
+
+    #specsListContainer,
+    #specsInfoContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+    }
+
+    /* #specsListContainer {
+        width: 90px;
+    } */
+
+    #specsInfoContainer {
+        width: 175px;
+        margin-left: 14px;
+    }
+
+    .spec,
+    .specInfo {
+        height: 24px;
+    }
 }

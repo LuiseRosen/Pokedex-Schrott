@@ -15,11 +15,12 @@
 <body onload="loadPokemons()">
     <div id="pageHeader">
         <img id="pokemonLogo" src="./icons/pokémon_logo.svg.png" alt="">
-        <div id="searchContainer">
-            <img id="searchIcon" src="./icons/search.svg" alt="">
+        <div id="searchOutline">
+            <label for="searchInput"><img  id="searchIcon" src="./icons/search.svg" alt=""></label>
             <input id="searchInput" type="text">
         </div>
     </div>
+    
     <div id="popupBackground" class="display-none" onclick="hideCard('card')">
         <div id="card" class="display-none" onclick="doNotClose(event)">
             <div id="cardHeader">
@@ -52,6 +53,9 @@
         </div>
     </div>
     <div id="pageBody">
+        <div id="searchContainer">
+            
+        </div>
         <div id="previewCardsContainer"></div>
         <button onclick="loadMorePokemons()" id="loadMoreBtn">load more</button>
     </div>
