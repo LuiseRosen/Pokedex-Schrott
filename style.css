@@ -139,7 +139,7 @@ h1 {
 #popupBackground {
     z-index: 2;
     position: fixed;
-    height: 100vh;
+    height: 100%;
     width: 100vw;
     background-color: rgba(0, 0, 0, 0.312);
     justify-content: center;
@@ -269,15 +269,11 @@ h1 {
 .infoContainer {
     font-size: 15px;
     height: 100%;
-    justify-content: left;
+    justify-content: space-between;
     margin-top: 24px;
 }
 
 /* Stats Chart ---------------------------------------------------------------------------------------------- */
-#baseStatsChart {
-    justify-content: space-between;
-
-}
 
 #statsContainer,
 #statsDataContainer,
@@ -323,7 +319,6 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
 }
 
 #specsListContainer {
@@ -512,30 +507,15 @@ h1 {
     }
 
     .infoContainer {
-        margin-top: 12px;
+        margin-top: 0px;
         font-size: 14px;
-        justify-content: left;
     }
 
     /* Stats Chart */
-    #baseStatsChart {
-        justify-content: space-between;
 
-    }
-
-    #statsContainer,
-    #statsDataContainer,
-    #statsLinesContainer {
-        /* font-weight: 500;
-        color: rgba(0, 0, 0, 0.457); */
-        justify-content: space-between;
-        align-items: flex-start;
-        line-height: 30px;
-        /* muss übereinstimmen mit .statsLineContainer heigt */
-    }
 
     #statsLinesContainer {
-        width: 150px;
+        width: 100px;
     }
 
     .statsLineContainer {

@@ -14,7 +14,7 @@ function templateStatsChart(statsLineLength) {
     return /*HTML*/ ` 
     <div class="statsLineContainer">
         <div class="emptyStatsLine">
-            <div class="statsLine" style="width:${statsLineLength}px"></div>
+            <div class="statsLine" style="width:${statsLineLength}%"></div>
         </div>
     </div>
 `;
