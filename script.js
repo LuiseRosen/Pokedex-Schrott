@@ -1,7 +1,9 @@
 // ______TO DO_______
 // alle console.logs entfernen
-// Suchfunktion
+// Suchfunktion --> Fehlermeldungen
 // Responsive: auf Handy anschauen --> mittig?
+// Pokemon-Logo wird auf dem Server nicht angezeigt
+// Warum geht es nur bis 386?
 
 let limit = 20;
 let offset = 0;
@@ -81,7 +83,7 @@ async function searchPokemon() {
     responseAsJson = await response.json();
 
     // Array mit allen Pokemon-Namen erstellen
-    // let allPokemons = allPokemonsArray(responseAsJson['results']);
+
     let allPokemons = [];
     for (let i = 0; i < responseAsJson['results'].length; i++) {
         allPokemons.push(responseAsJson['results'][i]['name']);
@@ -91,7 +93,7 @@ async function searchPokemon() {
     let search = searchInputContent();
     for (j = 0; j < allPokemons.length; j++) {
         let pokemonId = j + 1;
-        let pokemonName = allPokemons[j];
+        let pokemonName = capitalizeWord(allPokemons[j]);
         let imgSrc = getPreviewImgUrl(pokemonId);
         if (pokemonName.toLowerCase().includes(search))
             document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(j, pokemonName, imgSrc);
@@ -149,6 +151,7 @@ async function loadSpeciesInfo() {
     let url = currentPokemon['species']['url'];
     let response = await fetch(url);
     currentSpeciesInfo = await response.json();
+    console.log('currentSpeciesInfo', currentSpeciesInfo);
 }
 
 async function renderPokemonInfo(pokemonId) {
