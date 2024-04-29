@@ -1,3 +1,8 @@
+// ______TO DO_______
+// alle console.logs entfernen
+// Suchfunktion
+// Responsive: auf Handy anschauen --> mittig?
+
 let limit = 20;
 let offset = 0;
 
@@ -19,8 +24,7 @@ async function loadPokemons() {
 }
 
 function loadMorePokemons() {
-    limit += 20;
-    offset += 20;
+    offset += limit;
     loadPokemons();
 }
 
@@ -58,7 +62,7 @@ async function renderTypesToPreviewCard(pokemonId, i) {
 async function getTypes(pokemonId) {
     let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
     let response = await fetch(url);
-    let pokemon = await response.json(); // currentPokemon ist die "responseAsJson"
+    let pokemon = await response.json(); // pokemon ist die "responseAsJson"
     let typesJson = pokemon['types']; // Array mit allen Types
     let types = [];
     for (let i = 0; i < typesJson.length; i++) { // durch Array 'types' iterieren um alle types in die Subheadline einzufügen
@@ -68,6 +72,49 @@ async function getTypes(pokemonId) {
     return arrayToUpperCase(types);
 
 }
+
+// Suche -----------------------------------------------------------------------------------------------------------
+
+async function searchPokemon() {
+    let url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=386';
+    let response = await fetch(url);
+    responseAsJson = await response.json();
+
+    // Array mit allen Pokemon-Namen erstellen
+    // let allPokemons = allPokemonsArray(responseAsJson['results']);
+    let allPokemons = [];
+    for (let i = 0; i < responseAsJson['results'].length; i++) {
+        allPokemons.push(responseAsJson['results'][i]['name']);
+    }
+
+    document.getElementById('previewCardsContainer').innerHTML = '';
+    let search = searchInputContent();
+    for (j = 0; j < allPokemons.length; j++) {
+        let pokemonId = j + 1;
+        let pokemonName = allPokemons[j];
+        let imgSrc = getPreviewImgUrl(pokemonId);
+        if (pokemonName.toLowerCase().includes(search))
+            document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(j, pokemonName, imgSrc);
+        renderTypesToPreviewCard(pokemonId, j);
+    }
+
+}
+
+function searchInputContent() {
+    let search = document.getElementById('searchInput').value;
+    return search.toLowerCase();
+}
+
+// function allPokemonsArray(pokemonsJson) {
+//     let allPokemons = [];
+//     for (let i = 0; i < pokemonsJson.length; i++) {
+//         allPokemons.push(pokemonsJson[i]['name']);
+//     }
+//     return allPokemons;
+// }
+
+//function filterPokemonNames() {}
+
 
 // Card ------------------------------------------------------------------------------------------------------------
 
