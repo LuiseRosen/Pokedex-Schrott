@@ -20,9 +20,8 @@ function renderStatsData() {
 
 function renderStatsLines() {
     let statsData = getStatsData();
-
     for (i = 0; i < statsData.length; i++) {
-        let statsLineLength = (statsData[i] / 150) * 100; // statsdata[i] in % (150 ist der maximal erreichbare Wert)
+        let statsLineLength = (statsData[i] / 150) * 100; // statsData[i] in % (150 ist der maximal erreichbare Wert)
         document.getElementById('statsLinesContainer').innerHTML += templateStatsChart(statsLineLength);
     }
 }

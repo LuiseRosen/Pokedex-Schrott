@@ -1,10 +1,3 @@
-// ______TO DO_______
-// alle console.logs entfernen
-// Suchfunktion --> Fehlermeldungen
-// Responsive: auf Handy anschauen --> mittig?
-// Pokemon-Logo wird auf dem Server nicht angezeigt
-// Warum geht es nur bis 386?
-
 let limit = 20;
 let offset = 0;
 
@@ -21,21 +14,25 @@ async function loadPokemons() {
     responseAsJson = await response.json();
     createPokemonsArray(responseAsJson['results']);
     renderPokemons();
-
-    console.log(responseAsJson);
 }
 
 function loadMorePokemons() {
-    offset += limit;
-    loadPokemons();
+    if (offset < 40) { // 360
+        // offset += limit;
+        loadPokemons();
+    } else {
+        limit = 6;
+        loadPokemons();
+        // alert('Limit erreicht');
+    }
+
 }
 
-function createPokemonsArray(pokemonsJson) {
+function createPokemonsArray(pokemonsJson) { // Array mit den in die Preview zu ladenden Pokemons erstellen
     for (let i = 0; i < pokemonsJson.length; i++) {
         pokemons.push(pokemonsJson[i]['name']);
         pokemonsUrl.push(pokemonsJson[i]['url']);
     }
-    console.log('Pokemons', pokemons);
 }
 
 function renderPokemons() { // preview Cards laden
@@ -72,34 +69,17 @@ async function getTypes(pokemonId) {
         types.push(type);
     }
     return arrayToUpperCase(types);
-
 }
 
 // Suche -----------------------------------------------------------------------------------------------------------
 
 async function searchPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=386';
+    let url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=386'; // limit = 386 weil die späteren Pokemons bei habitat nichts mehr hinterlegt haben und dann der Steckbrief nicht funktioniert
     let response = await fetch(url);
-    responseAsJson = await response.json();
-
-    // Array mit allen Pokemon-Namen erstellen
-
-    let allPokemons = [];
-    for (let i = 0; i < responseAsJson['results'].length; i++) {
-        allPokemons.push(responseAsJson['results'][i]['name']);
-    }
-
+    let responseAsJson = await response.json();
+    let allPokemons = allPokemonsArray(responseAsJson['results']); // Array mit allen Pokemon-Namen erstellen
     document.getElementById('previewCardsContainer').innerHTML = '';
-    let search = searchInputContent();
-    for (j = 0; j < allPokemons.length; j++) {
-        let pokemonId = j + 1;
-        let pokemonName = capitalizeWord(allPokemons[j]);
-        let imgSrc = getPreviewImgUrl(pokemonId);
-        if (pokemonName.toLowerCase().includes(search))
-            document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(j, pokemonName, imgSrc);
-        renderTypesToPreviewCard(pokemonId, j);
-    }
-
+    filterPokemonPreviewCards(allPokemons);
 }
 
 function searchInputContent() {
@@ -107,16 +87,25 @@ function searchInputContent() {
     return search.toLowerCase();
 }
 
-// function allPokemonsArray(pokemonsJson) {
-//     let allPokemons = [];
-//     for (let i = 0; i < pokemonsJson.length; i++) {
-//         allPokemons.push(pokemonsJson[i]['name']);
-//     }
-//     return allPokemons;
-// }
+function allPokemonsArray(pokemonsJson) { // Array mit allen Pokemon-Namen erstellen
+    let allPokemons = [];
+    for (let i = 0; i < pokemonsJson.length; i++) {
+        allPokemons.push(pokemonsJson[i]['name']);
+    }
+    return allPokemons;
+}
 
-//function filterPokemonNames() {}
-
+function filterPokemonPreviewCards(allPokemons) {
+    for (i = 0; i < allPokemons.length; i++) {
+        let pokemonId = i + 1;
+        let pokemonName = capitalizeWord(allPokemons[i]);
+        let imgSrc = getPreviewImgUrl(pokemonId);
+        if (pokemonName.toLowerCase().includes(searchInputContent())) {
+            document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(i, pokemonName, imgSrc);
+            renderTypesToPreviewCard(pokemonId, i);
+        }
+    }
+}
 
 // Card ------------------------------------------------------------------------------------------------------------
 
@@ -141,7 +130,6 @@ async function loadPokemon(pokemonId) {
         let url = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
         let response = await fetch(url);
         currentPokemon = await response.json(); // currentPokemon ist die "responseAsJson"
-        console.log('loaded Pokemon', currentPokemon);
         await loadSpeciesInfo();
         renderPokemonInfo(pokemonId);
     }
@@ -151,7 +139,6 @@ async function loadSpeciesInfo() {
     let url = currentPokemon['species']['url'];
     let response = await fetch(url);
     currentSpeciesInfo = await response.json();
-    console.log('currentSpeciesInfo', currentSpeciesInfo);
 }
 
 async function renderPokemonInfo(pokemonId) {
@@ -189,7 +176,6 @@ function getPokemonImgUrl() { // Pokemon-Bild-URL laden
 }
 
 function renderTypesToCard(types) { // Types in die Card-Subheadline einfügen
-    console.log(types);
     for (let i = 0; i < types.length; i++) { // durch Array 'types' iterieren um alle types in die Subheadline einzufügen
         document.getElementById('cardSubHeadline').innerHTML += templateTypes(types[i]);
     }
