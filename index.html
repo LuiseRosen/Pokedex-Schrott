@@ -14,16 +14,13 @@
 
 <body onload="init()">
     <div id="pageHeader">
-        <img id="pokemonLogo" src="./img/pokemon_logo.png" alt="">
+        <img id="pokemonLogo" src="./icons/pokemon_logo.png" alt="">
         <div id="searchOutline">
             <label for="searchInput"><img  id="searchIcon" src="./icons/search.svg" alt=""></label>
             <input onkeydown="searchPokemon()" id="searchInput" type="text"> 
         </div>
     </div>
-    <div id="loadScreen" class="display-none">
-        <img id="loadingGif" src="img/loadscreen.gif" alt="">
-        <span id="loading">Loading...</span>
-    </div>
+    
     <div id="popupBackground" class="display-none" onclick="hideCard('card')">
         <div id="card" class="display-none" onclick="doNotClose(event)">
             <div id="cardHeader">

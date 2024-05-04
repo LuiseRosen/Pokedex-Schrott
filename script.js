@@ -315,7 +315,7 @@ function arrayToUpperCase(array) { // den 1. Buchstaben jedes Wortes im Array zu
     }
     return arrayToUpperCase;
 }
-
+// 
 function doNotClose(event) {
     event.stopPropagation();
 }
