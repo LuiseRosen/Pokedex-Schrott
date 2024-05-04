@@ -26,9 +26,9 @@ async function loadPokemons() {
 function loadMorePokemons() {
     show('loadScreen');
     if (offset < 360) {
-        load20morePokemons(); // 20 weitere Pokemons laden
+        load20morePokemons();
     } else if (offset == 360) { // verhindert, dass Pokemons nach 386 geladen werden
-        load6morePokemons(); // 6 weitere Pokemons laden
+        load6morePokemons();
     } else if (offset == 366) {
         alert('Limit erreicht');
     }
@@ -94,10 +94,14 @@ async function getTypes(pokemonId) {
 
 async function searchPokemon() {
     if (searchInputContent().length > 1) {
-        show('loadScreen');
-        filterPokemonPreviewCards();
+        let url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=386'; // limit = 386 weil die späteren Pokemons bei habitat nichts mehr hinterlegt haben und dann der Steckbrief nicht funktioniert
+        let response = await fetch(url);
+        let responseAsJson = await response.json();
+        let allPokemons = allPokemonsArray(responseAsJson['results']); // Array mit allen Pokemon-Namen erstellen
+        document.getElementById('previewCardsContainer').innerHTML = '';
+        filterPokemonPreviewCards(allPokemons);
     }
-    else if (searchInputContent().length = 1) {
+    else if (searchInputContent().length <= 1) {
         renderPokemons();
     }
 }
