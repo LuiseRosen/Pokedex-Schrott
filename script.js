@@ -34,6 +34,8 @@ function loadMorePokemons() {
     }
 }
 
+
+
 async function load20morePokemons() {
     offset += limit;
     await loadPokemons();
