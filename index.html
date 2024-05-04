@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="fonts.css">
 </head>
 
-<body onload="loadPokemons()">
+<body onload="init()">
     <div id="pageHeader">
         <img id="pokemonLogo" src="./img/pokemon_logo.png" alt="">
         <div id="searchOutline">
             <label for="searchInput"><img  id="searchIcon" src="./icons/search.svg" alt=""></label>
-            <input onkeydown="searchPokemon()" id="searchInput" type="text">
+            <input onkeydown="searchPokemon()" id="searchInput" type="text"> 
         </div>
     </div>
     <div id="loadScreen" class="display-none">

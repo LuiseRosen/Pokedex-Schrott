@@ -3,17 +3,24 @@ let offset = 0;
 
 let pokemons = [];
 let pokemonsUrl = [];
+let allPokemons = [];
 
 let currentPokemon;
 let currentSpeciesInfo;
+
+async function init() {
+    await loadPokemons();
+    renderPokemons();
+    createAllPokemonsArray();
+}
 
 
 async function loadPokemons() {
     let url = 'https://pokeapi.co/api/v2/pokemon/?offset=' + offset + '&limit=' + limit;
     let response = await fetch(url);
     responseAsJson = await response.json();
-    createPokemonsArray(responseAsJson['results']);
-    renderPokemons();
+    createPokemonsArray(responseAsJson['results']); 
+    console.log(pokemonsUrl);
 }
 
 function loadMorePokemons() {
@@ -27,21 +34,17 @@ function loadMorePokemons() {
     }
 }
 
-function hideLoadScreen() { // setTimeout(hide('loadScreen'), 2000); funktioniert nicht, geht nur ohne übergebene Variable
-    hide('loadScreen');
-}
-
 async function load20morePokemons() {
     offset += limit;
     await loadPokemons();
-    setTimeout(hideLoadScreen, 2000);
+    hide('loadScreen');
 }
 
 async function load6morePokemons() {
     limit = 6;
     offset += limit;
     loadPokemons();
-    setTimeout(hideLoadScreen, 2000);
+    hide('loadScreen');
 }
 
 function createPokemonsArray(pokemonsJson) { // Array mit den in die Preview zu ladenden Pokemons erstellen
@@ -90,17 +93,20 @@ async function getTypes(pokemonId) {
 // Suche -----------------------------------------------------------------------------------------------------------
 
 async function searchPokemon() {
-    if (searchInputContent().length >= 2) {
-        let url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=386'; // limit = 386 weil die späteren Pokemons bei habitat nichts mehr hinterlegt haben und dann der Steckbrief nicht funktioniert
-        let response = await fetch(url);
-        let responseAsJson = await response.json();
-        let allPokemons = allPokemonsArray(responseAsJson['results']); // Array mit allen Pokemon-Namen erstellen
-        document.getElementById('previewCardsContainer').innerHTML = '';
-        filterPokemonPreviewCards(allPokemons);
+    if (searchInputContent().length > 1) {
+        show('loadScreen');
+        filterPokemonPreviewCards();
     }
-    else if (searchInputContent().length < 2) {
+    else if (searchInputContent().length = 1) {
         renderPokemons();
     }
+}
+
+async function createAllPokemonsArray() {
+    let url = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=386'; // limit = 386 weil die späteren Pokemons bei habitat nichts mehr hinterlegt haben und dann der Steckbrief nicht funktioniert
+    let response = await fetch(url);
+    let responseAsJson = await response.json();
+    allPokemons = allPokemonsArray(responseAsJson['results']); // Array mit allen Pokemon-Namen erstellen
 }
 
 function searchInputContent() {
@@ -116,17 +122,17 @@ function allPokemonsArray(pokemonsJson) { // Array mit allen Pokemon-Namen erste
     return allPokemons;
 }
 
-async function filterPokemonPreviewCards(allPokemons) {
+function filterPokemonPreviewCards() {
+    document.getElementById('previewCardsContainer').innerHTML = '';
     for (i = 0; i < allPokemons.length; i++) {
         let pokemonId = i + 1;
         let pokemonName = capitalizeWord(allPokemons[i]);
         let imgSrc = getPreviewImgUrl(pokemonId);
 
         if (pokemonName.toLowerCase().includes(searchInputContent())) {
-            show('loadScreen');
             document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(i, pokemonName, imgSrc);
-            await renderTypesToPreviewCard(pokemonId, i);
-            setTimeout(hideLoadScreen, 2000);
+            renderTypesToPreviewCard(pokemonId, i);
+            hide('loadScreen');
         }
     }
 }
