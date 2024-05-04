@@ -128,7 +128,6 @@ function filterPokemonPreviewCards() {
         let pokemonId = i + 1;
         let pokemonName = capitalizeWord(allPokemons[i]);
         let imgSrc = getPreviewImgUrl(pokemonId);
-
         if (pokemonName.toLowerCase().includes(searchInputContent())) {
             document.getElementById('previewCardsContainer').innerHTML += templateCardPreview(i, pokemonName, imgSrc);
             renderTypesToPreviewCard(pokemonId, i);
